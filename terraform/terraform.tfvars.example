@@ -1,0 +1,24 @@
+# Copy this file to terraform.tfvars and update with your values
+domain_name = "grantredfearn.com"
+
+# Optional: Use a different bucket name
+bucket_name = "grantredfearn.com-website"
+
+# Set to true if you have a Route53 hosted zone
+create_dns_records = true 
+
+# Required if create_dns_records is true
+route53_zone_id = "Z27YJVGAOHTZU4"
+
+# Enable HTTPS with ACM certificate
+enable_https = true
+
+# CloudFront price class (PriceClass_100 for US/EU only - cheapest)
+price_class = "PriceClass_100"
+
+# Optional tags
+tags = {
+  Project     = "Personal Website"
+  Environment = "Production"
+  ManagedBy   = "Terraform"
+}

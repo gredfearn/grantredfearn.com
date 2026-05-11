@@ -1,27 +1,13 @@
 <script lang="ts">
 	import Nav from '$lib/components/Nav.svelte';
+	import type { PageData } from './$types';
 
-	interface BlogPost {
-		id: number;
-		title: string;
-		date: string;
-		excerpt: string;
+	interface Props {
+		data: PageData;
 	}
 
-	const posts: BlogPost[] = [
-		{
-			id: 1,
-			title: 'My First Blog Post',
-			date: '2026-05-08',
-			excerpt: 'This is my first blog post on my new Windows 95-themed website!'
-		},
-		{
-			id: 2,
-			title: 'Why I Love Retro UI',
-			date: '2026-05-07',
-			excerpt: 'Exploring the nostalgia and simplicity of Windows 95 design.'
-		}
-	];
+	let { data }: Props = $props();
+	const posts = data.posts;
 </script>
 
 <Nav />
@@ -30,11 +16,6 @@
 	<div class="window">
 		<div class="title-bar">
 			<div class="title-bar-text">Blog - Grant Redfearn</div>
-			<div class="title-bar-controls">
-				<button aria-label="Minimize"></button>
-				<button aria-label="Maximize"></button>
-				<button aria-label="Close"></button>
-			</div>
 		</div>
 		<div class="window-body">
 
@@ -48,7 +29,7 @@
 					<div class="window-body">
 						<p><strong>Date:</strong> {post.date}</p>
 						<p>{post.excerpt}</p>
-						<button onclick={() => alert('Blog post page coming soon!')}>Read More</button>
+						<a href="/blog/{post.slug}"><button>Read More</button></a>
 					</div>
 				</article>
 			{/each}

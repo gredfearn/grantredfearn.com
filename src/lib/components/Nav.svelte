@@ -48,9 +48,6 @@
 				<a href="/about" class="nav-link" onclick={closeMenu}>About</a>
 			</li>
 			<li class="nav-item">
-				<a href="/resume" class="nav-link" onclick={closeMenu}>Resume</a>
-			</li>
-			<li class="nav-item">
 				<a href="/blog" class="nav-link" onclick={closeMenu}>Blog</a>
 			</li>
 			<li class="nav-item">
@@ -65,8 +62,8 @@
 
 <style>
 	.navbar {
-		background: #0a0e12;
-		border-bottom: 1px solid #374151;
+		background: #515751;
+		border-bottom: 1px solid #C2C1A5;
 		padding: 10px 0;
 		position: sticky;
 		top: 0;
@@ -89,7 +86,7 @@
 
 	.star {
 		position: absolute;
-		background: white;
+		background: #F5F9E9;
 		border-radius: 50%;
 		animation: twinkle 3s ease-in-out infinite;
 	}
@@ -117,10 +114,11 @@
 	.nav-brand a {
 		font-weight: 600;
 		font-size: 1.2rem;
-		color: #10b981;
+		color: #C2C1A5;
 		text-decoration: none;
 		padding: 10px 0;
 		display: block;
+		font-family: 'Windows 95', sans-serif;
 	}
 
 	.nav-menu {
@@ -138,7 +136,7 @@
 	.nav-link {
 		display: block;
 		padding: 8px 16px;
-		color: #e5e7eb;
+		color: #F5F9E9;
 		text-decoration: none;
 		border: 2px solid transparent;
 		border-radius: 6px;
@@ -146,21 +144,21 @@
 	}
 
 	.nav-link:hover {
-		background: rgba(16, 185, 129, 0.1);
-		border: 2px solid rgba(16, 185, 129, 0.3);
-		color: #10b981;
+		background: rgba(194, 193, 165, 0.1);
+		border: 2px solid rgba(194, 193, 165, 0.3);
+		color: #C2C1A5;
 	}
 
 	.nav-link:active {
-		background: rgba(16, 185, 129, 0.2);
-		border: 2px solid #10b981;
+		background: rgba(194, 193, 165, 0.2);
+		border: 2px solid #C2C1A5;
 	}
 
 	.hamburger {
 		display: none;
 		flex-direction: column;
 		background: transparent;
-		border: 2px solid #374151;
+		border: 2px solid #515751;
 		padding: 8px;
 		cursor: pointer;
 		gap: 4px;
@@ -169,18 +167,18 @@
 	}
 
 	.hamburger:hover {
-		background: rgba(16, 185, 129, 0.1);
-		border-color: #10b981;
+		background: rgba(194, 193, 165, 0.1);
+		border-color: #C2C1A5;
 	}
 
 	.hamburger:active {
-		background: rgba(16, 185, 129, 0.2);
+		background: rgba(194, 193, 165, 0.2);
 	}
 
 	.hamburger-line {
 		width: 25px;
 		height: 3px;
-		background: #e5e7eb;
+		background: #F5F9E9;
 		display: block;
 	}
 
@@ -195,9 +193,9 @@
 			left: -100%;
 			top: 68px;
 			flex-direction: column;
-			background: #0a0e12;
+			background: #515751;
 			width: 100%;
-			border-bottom: 1px solid #374151;
+			border-bottom: 1px solid #C2C1A5;
 			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 			transition: left 0.3s ease;
 			gap: 0;

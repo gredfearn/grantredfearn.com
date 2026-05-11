@@ -1,44 +1,17 @@
 <script lang="ts">
 	import Nav from '$lib/components/Nav.svelte';
+	import type { PageData } from './$types';
 
-	interface AstroImage {
-		id: number;
-		url: string;
-		title: string;
-		date: string;
+	interface Props {
+		data: PageData;
 	}
 
-	// Mock data - will eventually come from S3
-	const images: AstroImage[] = [
-		{
-			id: 1,
-			url: '/images/betty-white-1.jpg',
-			title: 'Andromeda Galaxy',
-			date: '2026-03-15'
-		},
-		{
-			id: 2,
-			url: '/images/betty-white-1.jpg',
-			title: 'Orion Nebula',
-			date: '2026-02-20'
-		},
-		{
-			id: 3,
-			url: '/images/betty-white-1.jpg',
-			title: 'Pleiades Cluster',
-			date: '2026-01-10'
-		},
-		{
-			id: 4,
-			url: '/images/betty-white-1.jpg',
-			title: 'Horsehead Nebula',
-			date: '2026-04-05'
-		}
-	];
+	let { data }: Props = $props();
+	const images = data.images;
 
-	let selectedImage: AstroImage | null = $state(null);
+	let selectedImage: typeof images[0] | null = $state(null);
 
-	function openModal(image: AstroImage) {
+	function openModal(image: typeof images[0]) {
 		selectedImage = image;
 	}
 
@@ -53,24 +26,19 @@
 	<div class="window">
 		<div class="title-bar">
 			<div class="title-bar-text">Astrophotography - Grant Redfearn</div>
-			<div class="title-bar-controls">
-				<button aria-label="Minimize"></button>
-				<button aria-label="Maximize"></button>
-				<button aria-label="Close"></button>
-			</div>
 		</div>
 		<div class="window-body">
 			<h1>Astrophotography Gallery</h1>
 			<p>A collection of my deep sky astrophotography images.</p>
 
+			{#if images.length === 0}
+				<p style="color: var(--text-secondary); margin-top: 20px;">No images found. Check the S3 bucket configuration.</p>
+			{/if}
+
 			<div class="image-grid">
 				{#each images as image}
 					<div class="grid-item" onclick={() => openModal(image)}>
 						<img src={image.url} alt={image.title} />
-						<div class="image-info">
-							<strong>{image.title}</strong>
-							<span>{image.date}</span>
-						</div>
 					</div>
 				{/each}
 			</div>
@@ -82,15 +50,8 @@
 	<div class="modal" onclick={closeModal}>
 		<div class="modal-content" onclick={(e) => e.stopPropagation()}>
 			<div class="modal-window">
-				<div class="title-bar">
-					<div class="title-bar-text">{selectedImage.title}</div>
-					<div class="title-bar-controls">
-						<button aria-label="Close" onclick={closeModal}></button>
-					</div>
-				</div>
 				<div class="modal-body">
 					<img src={selectedImage.url} alt={selectedImage.title} />
-					<p><strong>Date:</strong> {selectedImage.date}</p>
 				</div>
 			</div>
 		</div>
@@ -107,15 +68,16 @@
 
 	.grid-item {
 		cursor: pointer;
-		border: 2px solid #000;
-		background: #fff;
-		padding: 5px;
-		transition: transform 0.2s;
+		border: 1px solid var(--border);
+		background: var(--bg-elevated);
+		border-radius: 8px;
+		overflow: hidden;
+		transition: transform 0.2s, border-color 0.2s;
 	}
 
 	.grid-item:hover {
-		transform: scale(1.05);
-		box-shadow: 2px 2px 0 #000;
+		transform: translateY(-4px);
+		border-color: var(--accent-beige);
 	}
 
 	.grid-item img {
@@ -123,22 +85,6 @@
 		height: 200px;
 		object-fit: cover;
 		display: block;
-	}
-
-	.image-info {
-		padding: 8px;
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-	}
-
-	.image-info strong {
-		font-size: 14px;
-	}
-
-	.image-info span {
-		font-size: 12px;
-		color: #666;
 	}
 
 	.modal {
@@ -160,12 +106,15 @@
 	}
 
 	.modal-window {
-		background: #c0c0c0;
+		background: var(--bg-surface);
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		overflow: hidden;
 	}
 
 	.modal-body {
-		background: #fff;
-		padding: 10px;
+		background: var(--bg-primary);
+		padding: 20px;
 	}
 
 	.modal-body img {
@@ -173,10 +122,12 @@
 		height: auto;
 		max-height: 70vh;
 		object-fit: contain;
+		border-radius: 4px;
 	}
 
 	.modal-body p {
-		margin-top: 10px;
+		margin-top: 16px;
 		text-align: center;
+		color: var(--text-secondary);
 	}
 </style>

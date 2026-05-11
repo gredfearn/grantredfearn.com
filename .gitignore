@@ -21,3 +21,11 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Terraform
+terraform.tfvars
+*.tfvars
+!terraform.tfvars.example
+.terraform/
+*.tfstate
+*.tfstate.backup

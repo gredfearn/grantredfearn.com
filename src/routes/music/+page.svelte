@@ -4,28 +4,54 @@
 	interface MusicEmbed {
 		id: number;
 		title: string;
-		platform: 'soundcloud' | 'bandcamp';
-		embedUrl: string;
+		platform: 'bandcamp';
+		albumId: string;
 		description: string;
 	}
 
-	// Example embeds - replace with your actual SoundCloud/Bandcamp URLs
 	const musicEmbeds: MusicEmbed[] = [
 		{
 			id: 1,
-			title: 'Latest Track',
-			platform: 'soundcloud',
-			embedUrl: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1234567890&color=%2310b981&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false',
-			description: 'My latest composition exploring ambient soundscapes'
+			title: 'MPC Beats',
+			platform: 'bandcamp',
+			albumId: '1235033405',
+			description: 'Sound journal, latest beats.'
 		},
 		{
 			id: 2,
-			title: 'Album Release',
+			title: 'Silver One EP',
 			platform: 'bandcamp',
-			embedUrl: 'https://bandcamp.com/EmbeddedPlayer/album=1234567890/size=large/bgcol=1a1f26/linkcol=10b981/tracklist=false/artwork=small/transparent=true/',
-			description: 'Full length album available on Bandcamp'
+			albumId: '3296272892',
+			description: 'All heavenly comforts rarify into air'
+		},
+		{
+			id: 3,
+			title: 'Jockabird EP',
+			platform: 'bandcamp',
+			albumId: '1464575648',
+			description: 'Collection of songs written between 2013-2015'
 		}
 	];
+
+	let isMobile = $state(false);
+
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			const checkMobile = () => {
+				isMobile = window.innerWidth <= 768;
+			};
+			checkMobile();
+			window.addEventListener('resize', checkMobile);
+			return () => window.removeEventListener('resize', checkMobile);
+		}
+	});
+
+	function getEmbedUrl(albumId: string) {
+		const size = isMobile ? 'small' : 'large';
+		const tracklist = isMobile ? '' : '/tracklist=false';
+		const artwork = isMobile ? '' : '/artwork=small';
+		return `https://bandcamp.com/EmbeddedPlayer/album=${albumId}/size=${size}/bgcol=515751/linkcol=C2C1A5${tracklist}${artwork}/transparent=true/`;
+	}
 </script>
 
 <Nav />
@@ -34,73 +60,33 @@
 	<div class="window">
 		<div class="title-bar">
 			<div class="title-bar-text">Music - Grant Redfearn</div>
-			<div class="title-bar-controls">
-				<button aria-label="Minimize"></button>
-				<button aria-label="Maximize"></button>
-				<button aria-label="Close"></button>
-			</div>
 		</div>
 		<div class="window-body">
 			<h1>My Music</h1>
-			<p>Listen to my latest tracks and albums on SoundCloud and Bandcamp.</p>
-
+            <a>A few recordings, experiments, and late-night ideas.</a>
 			<div class="music-grid">
 				{#each musicEmbeds as embed}
 					<article class="music-card">
 						<div class="music-header">
 							<h3>{embed.title}</h3>
-							<span class="platform-badge {embed.platform}">
-								{embed.platform === 'soundcloud' ? '🔊 SoundCloud' : '🎵 Bandcamp'}
-							</span>
+							<span class="platform-badge {embed.platform}">🎵 Bandcamp</span>
 						</div>
 						<p>{embed.description}</p>
 
-						{#if embed.platform === 'soundcloud'}
-							<iframe
-								title="{embed.title} - SoundCloud"
-								width="100%"
-								height="166"
-								scrolling="no"
-								frameborder="no"
-								allow="autoplay"
-								src={embed.embedUrl}
-							></iframe>
-						{:else if embed.platform === 'bandcamp'}
-							<iframe
-								title="{embed.title} - Bandcamp"
-								style="border: 0; width: 100%; height: 120px;"
-								src={embed.embedUrl}
-								seamless
-							></iframe>
-						{/if}
+						<iframe
+							title="{embed.title} - Bandcamp"
+							class="bandcamp-player"
+							src={getEmbedUrl(embed.albumId)}
+							seamless
+						></iframe>
+
+						<div style="margin-top: 16px;">
+							<a href="https://grantredfearn.bandcamp.com/album/jockabird-ep" target="_blank" rel="noopener noreferrer" class="bandcamp-link">
+								View on Bandcamp →
+							</a>
+						</div>
 					</article>
 				{/each}
-			</div>
-
-			<div class="instructions">
-				<h2>How to Add Your Music</h2>
-				<div class="instruction-cards">
-					<div class="instruction-card">
-						<h4>SoundCloud</h4>
-						<ol>
-							<li>Go to your track on SoundCloud</li>
-							<li>Click "Share" button</li>
-							<li>Click "Embed" tab</li>
-							<li>Copy the embed code URL</li>
-							<li>Add to the <code>musicEmbeds</code> array</li>
-						</ol>
-					</div>
-					<div class="instruction-card">
-						<h4>Bandcamp</h4>
-						<ol>
-							<li>Go to your album/track on Bandcamp</li>
-							<li>Click "Share / Embed"</li>
-							<li>Customize the player options</li>
-							<li>Copy the embed code URL</li>
-							<li>Add to the <code>musicEmbeds</code> array</li>
-						</ol>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -143,16 +129,10 @@
 		font-weight: 600;
 	}
 
-	.platform-badge.soundcloud {
-		background: rgba(255, 85, 0, 0.2);
-		color: #ff8c42;
-		border: 1px solid rgba(255, 85, 0, 0.3);
-	}
-
 	.platform-badge.bandcamp {
-		background: rgba(16, 185, 129, 0.2);
-		color: var(--accent-green-light);
-		border: 1px solid rgba(16, 185, 129, 0.3);
+		background: rgba(194, 193, 165, 0.2);
+		color: var(--accent-beige);
+		border: 1px solid var(--accent-beige);
 	}
 
 	.music-card p {
@@ -160,51 +140,29 @@
 		margin-bottom: 16px;
 	}
 
-	iframe {
+	.bandcamp-player {
+		border: 0;
+		width: 100%;
+		height: 120px;
 		border-radius: 8px;
 	}
 
-	.instructions {
-		margin-top: 50px;
-		padding-top: 30px;
-		border-top: 1px solid var(--divider);
+	@media screen and (max-width: 768px) {
+		.bandcamp-player {
+			height: 42px;
+		}
 	}
 
-	.instructions h2 {
-		color: var(--accent-green);
-		margin-bottom: 20px;
+	.bandcamp-link {
+		color: var(--accent-beige);
+		text-decoration: none;
+		font-weight: 600;
+		display: inline-block;
+		transition: color 0.2s;
 	}
 
-	.instruction-cards {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: 20px;
-	}
-
-	.instruction-card {
-		background: var(--bg-elevated);
-		padding: 20px;
-		border-radius: 8px;
-		border: 1px solid var(--border);
-	}
-
-	.instruction-card h4 {
-		color: var(--text-primary);
-		margin-top: 0;
-		margin-bottom: 12px;
-	}
-
-	.instruction-card ol {
-		color: var(--text-secondary);
-		padding-left: 20px;
-		line-height: 1.8;
-	}
-
-	.instruction-card code {
-		background: var(--bg-primary);
-		padding: 2px 6px;
-		border-radius: 4px;
-		font-size: 13px;
-		color: var(--accent-green-light);
+	.bandcamp-link:hover {
+		color: var(--accent-beige-hover);
+		text-decoration: underline;
 	}
 </style>

@@ -1,15 +1,47 @@
 :root {
-	--bg-primary: #0f1419;
-	--bg-surface: #1a1f26;
-	--bg-elevated: #242b33;
-	--accent-green: #10b981;
-	--accent-green-hover: #059669;
-	--accent-green-light: #34d399;
-	--text-primary: #e5e7eb;
-	--text-secondary: #9ca3af;
-	--text-muted: #6b7280;
-	--border: #374151;
-	--divider: #1f2937;
+	--bg-primary: #36453B;
+	--bg-surface: #515751;
+	--bg-elevated: #596869;
+	--primary: #36453B;
+	--primary-hover: #465549;
+	--primary-muted: #2a3530;
+	--secondary: #596869;
+	--secondary-hover: #6a797a;
+	--accent-gray: #515751;
+	--accent-gray-hover: #626862;
+	--accent-light: #F5F9E9;
+	--accent-light-hover: #ffffff;
+	--accent-beige: #C2C1A5;
+	--accent-beige-hover: #d3d2b6;
+	--text-primary: #F5F9E9;
+	--text-secondary: #F5F9E9;
+	--text-muted: #C2C1A5;
+	--border: #515751;
+	--divider: #36453B;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-primary: #36453B;
+		--bg-surface: #515751;
+		--bg-elevated: #596869;
+		--primary: #36453B;
+		--primary-hover: #465549;
+		--primary-muted: #2a3530;
+		--secondary: #596869;
+		--secondary-hover: #6a797a;
+		--accent-gray: #515751;
+		--accent-gray-hover: #626862;
+		--accent-light: #F5F9E9;
+		--accent-light-hover: #ffffff;
+		--accent-beige: #C2C1A5;
+		--accent-beige-hover: #d3d2b6;
+		--text-primary: #F5F9E9;
+		--text-secondary: #F5F9E9;
+		--text-muted: #C2C1A5;
+		--border: #515751;
+		--divider: #36453B;
+	}
 }
 
 body {
@@ -36,7 +68,7 @@ body {
 
 .window .title-bar {
 	background: var(--bg-elevated);
-	border-bottom: 1px solid var(--border);
+	border-bottom: 1px solid var(--secondary);
 	border-radius: 8px 8px 0 0;
 	padding: 12px 16px;
 	display: flex;
@@ -46,7 +78,7 @@ body {
 
 .window .title-bar-text {
 	font-weight: 600;
-	color: var(--text-primary);
+	color: var(--accent-beige);
 	font-size: 14px;
 }
 
@@ -61,12 +93,47 @@ body {
 }
 
 .window .title-bar-controls button:hover {
-	background: var(--accent-green);
+	background: var(--accent-beige);
 }
 
 .window .window-body {
 	padding: 24px;
 	color: var(--text-primary);
+	line-height: 1.5;
+}
+
+/* Override Windows 95 styling for body text readability */
+.window .window-body p,
+.window .window-body li,
+.window .window-body a {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+	color: var(--text-primary);
+	letter-spacing: 0;
+}
+
+.window .window-body p {
+	margin-bottom: 12px;
+}
+
+.window .window-body a {
+	color: var(--accent-beige);
+	text-decoration: none;
+}
+
+.window .window-body a:hover {
+	color: var(--accent-beige-hover);
+	text-decoration: underline;
+}
+
+.window .window-body ul,
+.window .window-body ol {
+	line-height: 1.5;
+}
+
+.window .window-body li {
+	margin-bottom: 6px;
 }
 
 .window .window-body h1 {
@@ -75,22 +142,22 @@ body {
 }
 
 .window .window-body h2 {
-	color: var(--accent-green);
+	color: var(--accent-beige);
 	margin-top: 1.5em;
 }
 
 .window .window-body a {
-	color: var(--accent-green);
+	color: var(--accent-beige);
 	text-decoration: none;
 }
 
 .window .window-body a:hover {
-	color: var(--accent-green-light);
+	color: var(--accent-beige-hover);
 	text-decoration: underline;
 }
 
 .window .window-body button {
-	background: var(--accent-green);
+	background: var(--primary);
 	color: white;
 	border: none;
 	padding: 10px 20px;
@@ -102,7 +169,7 @@ body {
 }
 
 .window .window-body button:hover {
-	background: var(--accent-green-hover);
+	background: var(--primary-hover);
 }
 
 .window .window-body hr {

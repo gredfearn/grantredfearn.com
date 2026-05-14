@@ -25,10 +25,10 @@
 <div class="desktop">
 	<div class="window">
 		<div class="title-bar">
-			<div class="title-bar-text">Astrophotography - Grant Redfearn</div>
+			<div class="title-bar-text">Astrophotography</div>
 		</div>
 		<div class="window-body">
-			<h1>Astrophotography Gallery</h1>
+			<h2>Astrophotography Gallery</h2>
 			<p>A collection of my deep sky astrophotography images.</p>
 
 			{#if images.length === 0}

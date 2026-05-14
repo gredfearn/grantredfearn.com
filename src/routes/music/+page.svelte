@@ -59,7 +59,7 @@
 <div class="desktop">
 	<div class="window">
 		<div class="title-bar">
-			<div class="title-bar-text">Music - Grant Redfearn</div>
+			<div class="title-bar-text">Music</div>
 		</div>
 		<div class="window-body">
 			<h1>My Music</h1>

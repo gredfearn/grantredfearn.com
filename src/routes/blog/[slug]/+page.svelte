@@ -1,6 +1,9 @@
 <script lang="ts">
 	import Nav from '$lib/components/Nav.svelte';
 	import type { PageData } from './$types';
+	import { marked } from 'marked';
+	import { markedHighlight } from 'marked-highlight';
+	import hljs from 'highlight.js';
 
 	interface Props {
 		data: PageData;
@@ -8,38 +11,22 @@
 
 	let { data }: Props = $props();
 
-	// Simple markdown to HTML converter (basic support)
-	function renderMarkdown(markdown: string): string {
-		let html = markdown;
+	// Configure marked with highlight.js
+	marked.use(markedHighlight({
+		langPrefix: 'hljs language-',
+		highlight(code, lang) {
+			const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+			return hljs.highlight(code, { language }).value;
+		}
+	}));
 
-		// Headers
-		html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-		html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-		html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+	marked.setOptions({
+		breaks: true,
+		gfm: true
+	});
 
-		// Bold
-		html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-		// Italic
-		html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-
-		// Links
-		html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-
-		// Lists
-		html = html.replace(/^\- (.*)$/gim, '<li>$1</li>');
-		html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
-
-		// Paragraphs
-		html = html.split('\n\n').map(para => {
-			if (para.startsWith('<h') || para.startsWith('<ul') || para.startsWith('<li>')) {
-				return para;
-			}
-			return `<p>${para}</p>`;
-		}).join('\n');
-
-		return html;
-	}
+	// Render markdown to HTML
+	const htmlContent = $derived(marked.parse(data.content) as string);
 </script>
 
 <Nav />
@@ -56,7 +43,7 @@
 			</div>
 
 			<article class="blog-content">
-				{@html renderMarkdown(data.content)}
+				{@html htmlContent}
 			</article>
 		</div>
 	</div>
@@ -156,5 +143,102 @@
 
 	.blog-content :global(em) {
 		font-style: italic;
+	}
+
+	.blog-content :global(pre) {
+		background-color: var(--bg-elevated);
+		color: var(--accent-light);
+		padding: 16px;
+		border-radius: 4px;
+		overflow-x: auto;
+		margin: 24px 0;
+		border: 1px solid var(--border);
+	}
+
+	.blog-content :global(pre code) {
+		background: none;
+		padding: 0;
+		color: inherit;
+		font-size: 14px;
+		font-family: 'Courier New', Courier, monospace;
+		line-height: 1.6;
+	}
+
+	.blog-content :global(code) {
+		background-color: var(--bg-elevated);
+		color: var(--accent-beige);
+		padding: 2px 6px;
+		border-radius: 3px;
+		font-family: 'Courier New', Courier, monospace;
+		font-size: 14px;
+		border: 1px solid var(--border);
+	}
+
+	/* Syntax highlighting with custom color palette */
+	.blog-content :global(.hljs) {
+		display: block;
+		overflow-x: auto;
+		padding: 0;
+		background: transparent;
+		color: var(--accent-light);
+	}
+
+	.blog-content :global(.hljs-comment),
+	.blog-content :global(.hljs-quote) {
+		color: #8a8c85;
+		font-style: italic;
+	}
+
+	.blog-content :global(.hljs-keyword),
+	.blog-content :global(.hljs-selector-tag),
+	.blog-content :global(.hljs-type) {
+		color: var(--accent-beige);
+		font-weight: 600;
+	}
+
+	.blog-content :global(.hljs-string),
+	.blog-content :global(.hljs-regexp),
+	.blog-content :global(.hljs-template-variable),
+	.blog-content :global(.hljs-attribute) {
+		color: #a8b89f;
+	}
+
+	.blog-content :global(.hljs-number),
+	.blog-content :global(.hljs-literal),
+	.blog-content :global(.hljs-meta) {
+		color: #b8a68c;
+	}
+
+	.blog-content :global(.hljs-function),
+	.blog-content :global(.hljs-title) {
+		color: var(--accent-light);
+		font-weight: 600;
+	}
+
+	.blog-content :global(.hljs-variable),
+	.blog-content :global(.hljs-name) {
+		color: #d4d9c8;
+	}
+
+	.blog-content :global(.hljs-tag),
+	.blog-content :global(.hljs-section) {
+		color: var(--accent-beige);
+	}
+
+	.blog-content :global(.hljs-built_in),
+	.blog-content :global(.hljs-builtin-name) {
+		color: #9fa892;
+	}
+
+	.blog-content :global(.hljs-params) {
+		color: #b5b9a8;
+	}
+
+	.blog-content :global(.hljs-emphasis) {
+		font-style: italic;
+	}
+
+	.blog-content :global(.hljs-strong) {
+		font-weight: bold;
 	}
 </style>

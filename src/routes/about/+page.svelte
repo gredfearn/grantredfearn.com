@@ -7,7 +7,7 @@
 <div class="desktop">
 	<div class="window">
 		<div class="title-bar">
-			<div class="title-bar-text">About - Grant Redfearn</div>
+			<div class="title-bar-text">About</div>
 		</div>
 		<div class="window-body">
 			<section>

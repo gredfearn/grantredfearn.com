@@ -1,13 +1,21 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	let isOpen = $state(false);
+	let menuButton: HTMLButtonElement;
 
 	function toggleMenu() {
 		isOpen = !isOpen;
+		console.log('Menu toggled:', isOpen);
 	}
 
 	function closeMenu() {
 		isOpen = false;
 	}
+
+	onMount(() => {
+		console.log('Nav component mounted');
+	});
 
 	// Generate random stars
 	const stars = Array.from({ length: 50 }, (_, i) => ({
@@ -34,7 +42,14 @@
 			<a href="/">Grant Redfearn</a>
 		</div>
 
-		<button class="hamburger" onclick={toggleMenu} aria-label="Toggle menu">
+		<button
+			bind:this={menuButton}
+			class="hamburger"
+			onclick={toggleMenu}
+			aria-label="Toggle menu"
+			aria-expanded={isOpen}
+			type="button"
+		>
 			<span class="hamburger-line"></span>
 			<span class="hamburger-line"></span>
 			<span class="hamburger-line"></span>
@@ -64,14 +79,13 @@
 	.navbar {
 		background: #515751;
 		border-bottom: 1px solid #C2C1A5;
-		padding: 10px 0;
+		padding: 16px 0;
 		position: sticky;
 		top: 0;
 		z-index: 100;
 		width: 100%;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-		overflow: hidden;
-		position: relative;
+		overflow: visible;
 	}
 
 	.stars-container {
@@ -119,6 +133,8 @@
 		padding: 10px 0;
 		display: block;
 		font-family: 'Windows 95', sans-serif;
+		position: relative;
+		z-index: 2;
 	}
 
 	.nav-menu {
@@ -135,12 +151,13 @@
 
 	.nav-link {
 		display: block;
-		padding: 8px 16px;
+		padding: 8px 12px;
 		color: #F5F9E9;
 		text-decoration: none;
 		border: 2px solid transparent;
 		border-radius: 6px;
 		transition: all 0.2s;
+		font-size: 14px;
 	}
 
 	.nav-link:hover {
@@ -164,6 +181,10 @@
 		gap: 4px;
 		border-radius: 6px;
 		transition: all 0.2s;
+		position: relative;
+		z-index: 2;
+		touch-action: manipulation;
+		-webkit-tap-highlight-color: rgba(194, 193, 165, 0.2);
 	}
 
 	.hamburger:hover {
@@ -191,7 +212,7 @@
 		.nav-menu {
 			position: fixed;
 			left: -100%;
-			top: 68px;
+			top: 74px;
 			flex-direction: column;
 			background: #515751;
 			width: 100%;
@@ -200,6 +221,7 @@
 			transition: left 0.3s ease;
 			gap: 0;
 			padding: 10px 0;
+			z-index: 99;
 		}
 
 		.nav-menu.active {

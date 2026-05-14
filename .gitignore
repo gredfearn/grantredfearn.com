@@ -12,6 +12,8 @@ node_modules
 .DS_Store
 Thumbs.db
 
+.direnv/
+
 # Env
 .env
 .env.*
@@ -27,5 +29,15 @@ terraform.tfvars
 *.tfvars
 !terraform.tfvars.example
 .terraform/
+.terraform.lock.hcl
 *.tfstate
 *.tfstate.backup
+
+# Nix
+flake.lock
+.direnv/*
+
+# Misc
+**/.DS_Store
+.log
+

@@ -10,7 +10,8 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"deploy": "npm run build && aws s3 sync build/ s3://grantredfearn.com-website --delete"
+		"deploy": "npm run build && aws s3 sync build/ s3://grantredfearn.com-website --delete",
+        "release": "npm run build && aws s3 sync build/ s3://$(cd terraform && terraform output -raw bucket_name) --delete && aws cloudfront create-invalidation --distribution-id $(cd terraform && terraform output -raw cloudfront_distribution_id) --paths '/*'" 
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^7.0.1",

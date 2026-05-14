@@ -1,45 +1,83 @@
-# sv
+# Setup
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
+Install deps with:
+```bash
+npm i
 ```
 
-To recreate this project with the same configuration:
+Run dev server:
 
-```sh
-# recreate this project
-npx sv@0.15.3 create --template minimal --types ts --install npm .
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+Deploy to S3:
 
-To create a production version of your app:
-
-```sh
-npm run build
+```bash
+npm run deploy
 ```
 
-You can preview the production build with `npm run preview`.
+Deploy and Invalidate Cloudfront Cache
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```bash
+npm run release
+```
+
+# Terraform Infrastructure for grantredfearn.com
+
+This Terraform module creates:
+- S3 bucket for static website hosting
+- CloudFront distribution for CDN and HTTPS
+- ACM certificate for SSL/TLS
+- Route53 DNS records (optional)
+
+## Prerequisites
+
+1. AWS CLI configured with credentials
+2. Terraform installed (>= 1.0)
+3. (Optional) Route53 hosted zone for your domain
+
+## Quick Start
+
+### 1. Configure Variables
+
+```bash
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars with your values
+```
+
+### 2. Initialize Terraform
+
+```bash
+cd terraform
+terraform init
+```
+
+### 3. Plan and Apply
+
+```bash
+terraform plan
+terraform apply
+```
+
+### 4. Deploy The Site
+
+After Terraform creates the infrastructure:
+
+```bash
+cd ..
+npm run deploy
+```
+
+### 5. Invalidate CloudFront Cache (after updates)
+
+```bash
+aws cloudfront create-invalidation \
+  --distribution-id $(terraform -chdir=terraform output -raw cloudfront_distribution_id) \
+  --paths "/*"
+```
+
+Everything is automated, including DNS and SSL certificate validation.
 
 ## Color Palette
 - Dark Slate Grey #36453B

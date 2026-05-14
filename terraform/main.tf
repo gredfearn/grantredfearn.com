@@ -6,6 +6,12 @@ terraform {
       version = "~> 5.0"
     }
   }
+
+  backend "s3" {
+    bucket = "grant-tf-state"
+    key    = "grantredfearn/terraform.tfstate"
+    region = "us-east-1"
+  }
 }
 
 locals {
@@ -90,9 +96,9 @@ resource "aws_acm_certificate" "website" {
   }
 }
 
-# Route53 DNS validation records
+# Route53 DNS validation records (always created when HTTPS is enabled)
 resource "aws_route53_record" "cert_validation" {
-  for_each = var.enable_https && var.create_dns_records ? {
+  for_each = var.enable_https ? {
     for dvo in aws_acm_certificate.website[0].domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
@@ -107,9 +113,9 @@ resource "aws_route53_record" "cert_validation" {
   ttl     = 60
 }
 
-# ACM Certificate validation
+# ACM Certificate validation (always validated when HTTPS is enabled)
 resource "aws_acm_certificate_validation" "website" {
-  count = var.enable_https && var.create_dns_records ? 1 : 0
+  count = var.enable_https ? 1 : 0
 
   provider                = aws.us_east_1
   certificate_arn         = aws_acm_certificate.website[0].arn

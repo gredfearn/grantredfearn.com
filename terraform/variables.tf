@@ -16,9 +16,8 @@ variable "create_dns_records" {
 }
 
 variable "route53_zone_id" {
-  description = "Route53 hosted zone ID (required if create_dns_records is true)"
+  description = "Route53 hosted zone ID (required for DNS records and certificate validation)"
   type        = string
-  default     = ""
 }
 
 variable "enable_https" {

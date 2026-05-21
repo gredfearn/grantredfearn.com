@@ -15,6 +15,7 @@
 				<ul>
 					<li>Email: <a href="mailto:grantredfearn@gmail.com">grantredfearn@gmail.com</a></li>
 					<li>GitHub: <a href="https://github.com/gredfearn" target="_blank" rel="noopener noreferrer">github.com/gredfearn</a></li>
+					<li>GitLab: <a href="https://gitlab.com/gredfearn" target="_blank" rel="noopener noreferrer">gitlab.com/gredfearn</a></li>
 					<li>LinkedIn: <a href="https://linkedin.com/in/gredfearn" target="_blank" rel="noopener noreferrer">linkedin.com/in/gredfearn</a></li>
 				</ul>
 			</section>

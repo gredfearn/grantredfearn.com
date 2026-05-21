@@ -2,6 +2,23 @@ import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
+import { marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
+import hljs from 'highlight.js';
+
+// Configure marked with highlight.js
+marked.use(markedHighlight({
+	langPrefix: 'hljs language-',
+	highlight(code, lang) {
+		const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+		return hljs.highlight(code, { language }).value;
+	}
+}));
+
+marked.setOptions({
+	breaks: true,
+	gfm: true
+});
 
 export const load: PageServerLoad = async ({ params }) => {
 	const { slug } = params;
@@ -30,11 +47,14 @@ export const load: PageServerLoad = async ({ params }) => {
 			}
 		});
 
+		// Parse markdown to HTML on the server
+		const htmlContent = await marked.parse(content.trim());
+
 		return {
 			title: frontmatter.title || 'Untitled',
 			date: frontmatter.date || '',
 			excerpt: frontmatter.excerpt || '',
-			content: content.trim(),
+			htmlContent,
 			slug
 		};
 	} catch (err) {

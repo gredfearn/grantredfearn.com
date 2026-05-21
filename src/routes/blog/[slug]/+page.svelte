@@ -1,32 +1,12 @@
 <script lang="ts">
 	import Nav from '$lib/components/Nav.svelte';
 	import type { PageData } from './$types';
-	import { marked } from 'marked';
-	import { markedHighlight } from 'marked-highlight';
-	import hljs from 'highlight.js';
 
 	interface Props {
 		data: PageData;
 	}
 
 	let { data }: Props = $props();
-
-	// Configure marked with highlight.js
-	marked.use(markedHighlight({
-		langPrefix: 'hljs language-',
-		highlight(code, lang) {
-			const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-			return hljs.highlight(code, { language }).value;
-		}
-	}));
-
-	marked.setOptions({
-		breaks: true,
-		gfm: true
-	});
-
-	// Render markdown to HTML
-	const htmlContent = $derived(marked.parse(data.content) as string);
 </script>
 
 <Nav />
@@ -43,7 +23,7 @@
 			</div>
 
 			<article class="blog-content">
-				{@html htmlContent}
+				{@html data.htmlContent}
 			</article>
 		</div>
 	</div>

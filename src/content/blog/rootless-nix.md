@@ -138,7 +138,7 @@ Minimal container example with Nix:
 
 NOTE: this assumes that you have wrapped your application by creating a Nix
 derivation for your `myapp` package. You can download all of
-(nixpkgs)[<https://github.com/nixos/nixpkgs>] repo and see how every single
+[nixpkgs](https://github.com/nixos/nixpkgs) repo and see how every single
 official Nix derivation is built, and garuntee you can find some goodness in
 there to yoink.
 
